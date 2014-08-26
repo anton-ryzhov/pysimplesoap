@@ -117,7 +117,7 @@ class SoapClient(object):
         else:
             self.__soap_ns = soap_ns
 
-        # SOAP Server (special cases like oracle, jbossas6 or jetty)
+        # SOAP Server (special cases like oracle, jbossas6, axis, carbon or jetty)
         self.__soap_server = soap_server
 
         # SOAP Header support
@@ -258,7 +258,7 @@ class SoapClient(object):
         self.xml_request = request.as_xml()
         self.xml_response = self.send(method, self.xml_request)
         response = SimpleXMLElement(self.xml_response, namespace=self.namespace,
-                                    jetty=self.__soap_server in ('jetty',))
+                                    jetty=self.__soap_server in ('jetty', 'carbon', ))
         if self.exceptions and response("Fault", ns=list(soap_namespaces.values()), error=False):
             raise SoapFault(unicode(response.faultcode), unicode(response.faultstring))
 
